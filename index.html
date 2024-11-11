@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agenda de Estudos</title>
+  <style>
+    /* Estilos gerais */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #2A6D69;
+      font-size: 2em;
+      text-align: center;
+    }
+
+    .day {
+      max-width: 600px;
+      width: 100%;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 10px 0;
+    }
+
+    .today {
+      background-color: #475966;
+      color: #CFFFE3;
+      font-weight: bold;
+    }
+
+    .yesterday, .tomorrow {
+      background-color: #D3D3D3;
+      color: #333;
+    }
+
+    .date, .subject, .topic {
+      margin: 5px 0;
+    }
+
+    .subject {
+      font-size: 1.2em;
+    }
+
+    .topic {
+      font-size: 1em;
+      font-style: italic;
+    }
+
+    /* Estilos responsivos para smartphones */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5em;
+      }
+
+      .day {
+        padding: 10px;
+      }
+
+      .subject {
+        font-size: 1.1em;
+      }
+
+      .topic {
+        font-size: 0.9em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Agenda de Estudos</h1>
+  <div id="content"></div>
+
+  <script>
+    // Dados de exemplo
+    const data = [
+      { date: "11/11/2024", subject: "Língua Portuguesa", topic: "Redação Oficial" },
+    { date: "11/11/2024", subject: "Noções de Direito Constitucional", topic: "Normas Constitucionais" },
+    { date: "12/11/2024", subject: "Matemática e raciocínio lógico", topic: "Estrutura Lógica de Relações Arbitrárias" },
+    { date: "12/11/2024", subject: "Noções de Direito Administrativo", topic: "Administração Pública" },
+    { date: "13/11/2024", subject: "Noções de Informática", topic: "Noções de Sistema Operacional - parte 1" },
+    { date: "13/11/2024", subject: "Noções de Administração Pública", topic: "Características Básicas das Organizações Formais Modernas" },
+    { date: "14/11/2024", subject: "Língua Portuguesa", topic: "Ortografia e Acentuação" },
+    { date: "14/11/2024", subject: "Noções de Orçamento Público", topic: "Orçamento na Constituição Federal de 1988" },
+    { date: "15/11/2024", subject: "Matemática e raciocínio lógico", topic: "Lógica das Situações - parte 1" },
+    { date: "15/11/2024", subject: "Noções de Direito Constitucional", topic: "Controle de Constitucionalidade - parte 1" },
+    { date: "16/11/2024", subject: "Noções de Legislação", topic: "Lei nº 8.112/1990 e Alterações - parte 1" },
+    { date: "16/11/2024", subject: "Noções de Direitos Humanos", topic: "Direitos Humanos" },
+    { date: "17/11/2024", subject: "Revisão geral de todo o conteúdo estudado na semana", topic: "Revisão geral de todo o conteúdo estudado na semana" },
+    { date: "18/11/2024", subject: "Noções de Informática", topic: "Noções de Sistema Operacional - parte 2" },
+    { date: "18/11/2024", subject: "Noções de Direito Administrativo", topic: "Lei de Introdução às Normas do Direito Brasileiro" },
+    { date: "19/11/2024", subject: "Língua Portuguesa", topic: "Sinal Indicativo de Crase" },
+    { date: "19/11/2024", subject: "Noções de Direito Constitucional", topic: "Controle de Constitucionalidade - parte 1" },
+    { date: "20/11/2024", subject: "Matemática e raciocínio lógico", topic: "Lógica das Situações - parte 2" },
+    { date: "20/11/2024", subject: "Noções de Administração Pública", topic: "Gestão Pública e Gestão Privada, Comunicação e Redes Organizacionais" },
+    { date: "21/11/2024", subject: "Noções de Informática", topic: "Ferramentas de Produtividade e Comunicação" },
+    { date: "21/11/2024", subject: "Noções de Orçamento Público", topic: "Legislação Orçamentária" },
+    { date: "22/11/2024", subject: "Língua Portuguesa", topic: "Compreensão e Interpretação de Textos" },
+    { date: "22/11/2024", subject: "Noções de Direito Administrativo", topic: "Poderes e Deveres dos Administradores Públicos" },
+    { date: "23/11/2024", subject: "Noções de Legislação", topic: "Lei nº 8.112/1990 e Alterações - parte 2" },
+    { date: "23/11/2024", subject: "Noções de Direitos Humanos", topic: "Tratados e Interpretação dos Direitos Humanos" },
+    { date: "24/11/2024", subject: "Revisão geral de todo o conteúdo estudado na semana", topic: "Revisão geral de todo o conteúdo estudado na semana" },
+    { date: "25/11/2024", subject: "Língua Portuguesa", topic: "Denotação e Conotação, Tipos de Discurso" },
+    { date: "25/11/2024", subject: "Noções de Direito Constitucional", topic: "Princípios Fundamentais" },
+    { date: "26/11/2024", subject: "Matemática e raciocínio lógico", topic: "Processo Lógico e Conclusão" },
+    { date: "26/11/2024", subject: "Noções de Direito Administrativo", topic: "Ato Administrativo, Processo Administrativo" },
+    { date: "27/11/2024", subject: "Noções de Informática", topic: "Compartilhamento e Gerenciamento de Arquivos" },
+    { date: "27/11/2024", subject: "Noções de Administração Pública", topic: "Gestão e Avaliação de Desempenho" },
+    { date: "28/11/2024", subject: "Língua Portuguesa", topic: "Intertextualidade, Figuras de Linguagem" },
+    { date: "28/11/2024", subject: "Noções de Orçamento Público", topic: "Gestão de Pessoas - parte 1" },
+    { date: "29/11/2024", subject: "Matemática e raciocínio lógico", topic: "Números Inteiros e Racionais" },
+    { date: "29/11/2024", subject: "Noções de Direito Constitucional", topic: "Direitos e Garantias Fundamentais" },
+    { date: "30/11/2024", subject: "Noções de Legislação", topic: "Lei nº 8.112/1990 e Alterações - parte 3" },
+    { date: "30/11/2024", subject: "Noções de Direitos Humanos", topic: "Documentos e Pactos Internacionais - parte 1" },
+    { date: "01/12/2024", subject: "Revisão geral de todo o conteúdo estudado na semana", topic: "Revisão geral de todo o conteúdo estudado na semana" },
+    { date: "02/12/2024", subject: "Noções de Informática", topic: "Ferramentas do Google Workspace - parte 1" },
+    { date: "02/12/2024", subject: "Noções de Direito Administrativo", topic: "Controle da Administração Pública" },
+    { date: "03/12/2024", subject: "Língua Portuguesa", topic: "Morfossintaxe" },
+    { date: "03/12/2024", subject: "Noções de Direito Constitucional", topic: "Partidos Políticos" },
+    { date: "04/12/2024", subject: "Matemática e raciocínio lógico", topic: "Frações" },
+    { date: "04/12/2024", subject: "Noções de Administração Pública", topic: "Processo Organizacional" },
+    { date: "05/12/2024", subject: "Noções de Informática", topic: "Ferramentas do Google Workspace - parte 2" },
+    { date: "05/12/2024", subject: "Noções de Orçamento Público", topic: "Gestão de Pessoas - parte 2" },
+    { date: "06/12/2024", subject: "Língua Portuguesa", topic: "Formação de Palavras, Sinonímia e Antonímia" },
+    { date: "06/12/2024", subject: "Noções de Direito Administrativo", topic: "Lei de Improbidade Administrativa" },
+    { date: "07/12/2024", subject: "Noções de Legislação", topic: "Noções de Sustentabilidade" },
+    { date: "07/12/2024", subject: "Noções de Direitos Humanos", topic: "Documentos e Pactos Internacionais - parte 2" },
+    { date: "08/12/2024", subject: "Revisão geral de todo o conteúdo estudado na semana", topic: "Revisão geral de todo o conteúdo estudado na semana" },
+    { date: "09/12/2024", subject: "Língua Portuguesa", topic: "Pontuação" },
+    { date: "09/12/2024", subject: "Noções de Direito Constitucional", topic: "Organização do Estado" },
+    { date: "10/12/2024", subject: "Matemática e raciocínio lógico", topic: "Números e Grandezas Proporcionais - parte 1" },
+    { date: "10/12/2024", subject: "Noções de Direito Administrativo", topic: "Licitações e Contratos Administrativos - parte 1" },
+    { date: "11/12/2024", subject: "Noções de Informática", topic: "Redes de Computadores - parte 1" },
+    { date: "11/12/2024", subject: "Noções de Administração Pública", topic: "Gestão Estratégica" },
+    { date: "12/12/2024", subject: "Língua Portuguesa", topic: "Pronomes" },
+    { date: "12/12/2024", subject: "Noções de Orçamento Público", topic: "Indicadores de Desempenho" },
+    { date: "13/12/2024", subject: "Matemática e raciocínio lógico", topic: "Números e Grandezas Proporcionais - parte 2" },
+    { date: "13/12/2024", subject: "Noções de Direito Constitucional", topic: "Administração Pública" },
+    { date: "14/12/2024", subject: "Noções de Legislação", topic: "Código de Ética do TRT da 6ª Região" },
+    { date: "14/12/2024", subject: "Noções de Direitos Humanos", topic: "Sistema Regional Interamericano de Proteção aos Direitos Humanos" },
+    { date: "15/12/2024", subject: "Revisão geral de todo o conteúdo estudado na semana", topic: "Revisão geral de todo o conteúdo estudado na semana" },
+    { date: "16/12/2024", subject: "Noções de Informática", topic: "Redes de Computadores - parte 2" },
+    { date: "16/12/2024", subject: "Noções de Direito Administrativo", topic: "Licitações e Contratos Administrativos - parte 2" },
+    { date: "17/12/2024", subject: "Língua Portuguesa", topic: "Concordância" },
+    { date: "17/12/2024", subject: "Noções de Direito Constitucional", topic: "Organização dos Poderes - parte 1" },
+    { date: "18/12/2024", subject: "Matemática e raciocínio lógico", topic: "Noções de Probabilidade - parte 1" },
+    { date: "18/12/2024", subject: "Noções de Administração Pública", topic: "Gestão de Pessoas, Gestão por Processos" },
+    { date: "19/12/2024", subject: "Noções de Informática", topic: "Navegadores Web" },
+    { date: "19/12/2024", subject: "Noções de Orçamento Público", topic: "Avaliação da Gestão Pública" },
+    { date: "20/12/2024", subject: "Língua Portuguesa", topic: "Flexão" },
+    { date: "20/12/2024", subject: "Noções de Direito Administrativo", topic: "Serviço Público" },
+    { date: "21/12/2024", subject: "Noções de Legislação", topic: "Regimento Interno do TRT da 6ª Região" },
+    { date: "21/12/2024", subject: "Noções de Direitos Humanos", topic: "Mecanismos de Proteção aos Direitos Humanos" },
+    { date: "22/12/2024", subject: "Revisão geral de todo o conteúdo estudado na semana", topic: "Revisão geral de todo o conteúdo estudado na semana" },
+    { date: "23/12/2024", subject: "Língua Portuguesa", topic: "Vozes do Verbo, Correlação de Tempos e Modos Verbais" },
+    { date: "23/12/2024", subject: "Noções de Direito Constitucional", topic: "Organização dos Poderes - parte 2" },
+    { date: "24/12/2024", subject: "Matemática e raciocínio lógico", topic: "Noções de Probabilidade - parte 2" },
+    { date: "24/12/2024", subject: "Noções de Direito Administrativo", topic: "Agentes Públicos" },
+    { date: "25/12/2024", subject: "Noções de Informática", topic: "Mecanismos de Busca e Pesquisa na Internet" },
+    { date: "25/12/2024", subject: "Noções de Administração Pública", topic: "Gestão por Projetos, Gestão de Contratos, Gestão da Qualidade" },
+    { date: "26/12/2024", subject: "Língua Portuguesa", topic: "Regência" },
+    { date: "26/12/2024", subject: "Noções de Orçamento Público", topic: "Liderança e Motivação" },
+    { date: "27/12/2024", subject: "Matemática e raciocínio lógico", topic: "Noções de Estatística - parte 1" },
+    { date: "27/12/2024", subject: "Noções de Direito Constitucional", topic: "Organização dos Poderes - parte 3" },
+    { date: "28/12/2024", subject: "Noções de Legislação", topic: "Política de Prevenção e Enfrentamento da Violência, Assédio e Discriminação - parte 1" },
+    { date: "28/12/2024", subject: "Noções de Direitos Humanos", topic: "Direitos Humanos em Espécie e Grupos Vulneráveis" },
+    { date: "29/12/2024", subject: "Revisão geral de todo o conteúdo estudado na semana", topic: "Revisão geral de todo o conteúdo estudado na semana" },
+    { date: "30/12/2024", subject: "Noções de Informática", topic: "Organização e Gerenciamento de Informações" },
+    { date: "30/12/2024", subject: "Noções de Direito Administrativo", topic: "Lei de Acesso à Informação" },
+    { date: "31/12/2024", subject: "Língua Portuguesa", topic: "Coordenação e Subordinação" },
+    { date: "31/12/2024", subject: "Noções de Direito Constitucional", topic: "Funções Essenciais à Justiça" },
+    { date: "01/01/2025", subject: "Matemática e raciocínio lógico", topic: "Noções de Estatística - parte 2" },
+    { date: "01/01/2025", subject: "Noções de Administração Pública", topic: "Motivação e Liderança, Decisão e Processo Decisório" },
+    { date: "02/01/2025", subject: "Noções de Informática", topic: "Segurança da Informação" },
+    { date: "02/01/2025", subject: "Noções de Orçamento Público", topic: "Processo Decisório" },
+    { date: "03/01/2025", subject: "Língua Portuguesa", topic: "Conectivos, Redação (estruturação)" },
+    { date: "03/01/2025", subject: "Noções de Direito Administrativo", topic: "Lei Geral de Proteção de Dados Pessoais" },
+    { date: "04/01/2025", subject: "Noções de Legislação", topic: "Política de Prevenção e Enfrentamento da Violência, Assédio e Discriminação - parte 2" },
+    { date: "04/01/2025", subject: "Noções de Direitos Humanos", topic: "Resoluções Relacionadas à Equidade e Diversidade no Poder Judiciário" },
+    { date: "05/01/2025", subject: "Revisão geral de todo o conteúdo estudado na semana", topic: "Revisão geral de todo o conteúdo estudado na semana" },
+      // ... adicione os outros dados aqui
+    ];
+
+    // Função para formatar a data
+    function formatDate(date) {
+      return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
+    }
+
+    // Obter datas de ontem, hoje e amanhã
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const todayStr = formatDate(today);
+    const yesterdayStr = formatDate(yesterday);
+    const tomorrowStr = formatDate(tomorrow);
+
+    // Filtrar os dados para ontem, hoje e amanhã
+    const todayContent = data.filter(item => item.date === todayStr);
+    const yesterdayContent = data.filter(item => item.date === yesterdayStr);
+    const tomorrowContent = data.filter(item => item.date === tomorrowStr);
+
+    // Função para exibir os dados na página
+    function displayContent(content, dayClass) {
+      const container = document.getElementById("content");
+      content.forEach(item => {
+        const dayDiv = document.createElement("div");
+        dayDiv.className = `day ${dayClass}`;
+        dayDiv.innerHTML = `
+          <div class="date">${item.date}</div>
+          <div class="subject">${item.subject}</div>
+          <div class="topic">${item.topic}</div>
+        `;
+        container.appendChild(dayDiv);
+      });
+    }
+
+    // Exibir conteúdo
+    if (yesterdayContent.length > 0) {
+      displayContent(yesterdayContent, "yesterday");
+    }
+    if (todayContent.length > 0) {
+      displayContent(todayContent, "today");
+    }
+    if (tomorrowContent.length > 0) {
+      displayContent(tomorrowContent, "tomorrow");
+    }
+  </script>
+
+</body>
+</html>
